@@ -20,12 +20,7 @@ import java.time.Duration;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Parameterized.class)
-public class ScooterOrderWebTest {
-
-    private WebDriver chrome_driver;
-
-    private WebDriver firefox_driver;
-
+public class ScooterOrderWebTest extends BaseWebTest {
     private final String name;
     private final String surname;
     private final String address;
@@ -45,7 +40,7 @@ public class ScooterOrderWebTest {
         this.commentForCourier = commentForCourier;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Тестовые данные: {0} {1}")
     public static Object[][] getCredentialsForCheckOrderPage() {
         // Генерируем тестовые данные
         return new Object[][]{
@@ -56,22 +51,7 @@ public class ScooterOrderWebTest {
         };
     }
 
-    @Before
-    public void StartUp() {
-        // Создаем драйвер для браузера Chrome
-        WebDriverManager.chromedriver().setup();
-
-        chrome_driver = new ChromeDriver();
-        chrome_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(EnvConfig.IMPLICITY_WAIT));
-
-        // Создаем драйвер для браузера Firefox
-        WebDriverManager.chromedriver().setup();
-
-        firefox_driver = new FirefoxDriver();
-        firefox_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(EnvConfig.IMPLICITY_WAIT));
-    }
-
-    // Метод тестирования страницы оформления заказа
+        // Метод тестирования страницы оформления заказа
     public void checkOrderPage(WebDriver driver, boolean useTopOrderButton) throws InterruptedException {
 
         driver.get(EnvConfig.BASE_URL);
@@ -117,33 +97,13 @@ public class ScooterOrderWebTest {
 
     @Test
     // Тест создания заказа по верхней кнопке в браузере Mozilla FireFox
-    public void checkOrderPageByTopButtonFirefox () throws InterruptedException {
-        checkOrderPage(firefox_driver, true);
-    }
-
-    @Test
-    // Тест создания заказа по верхней кнопке в браузере Google Chrome
-    public void checkOrderPageByTopButtonChrome () throws InterruptedException {
-        checkOrderPage(chrome_driver, true);
+    public void checkOrderPageByTopButton () throws InterruptedException {
+        checkOrderPage(driver, true);
     }
 
     @Test
     // Тест создания заказа по нижней кнопке в браузере Mozilla FireFox
-    public void checkOrderPageByBottomButtonFirefox () throws InterruptedException {
-        checkOrderPage(firefox_driver, false);
+    public void checkOrderPageByBottomButton () throws InterruptedException {
+        checkOrderPage(driver, false);
     }
-
-    @Test
-    // Тест создания заказа по нижней кнопке в браузере Google Chrome
-    public void checkOrderPageByBottomButtonChrome () throws InterruptedException {
-        checkOrderPage(chrome_driver, false);
-    }
-
-    // Закрываем браузер после каждого теста
-    @After
-    public void teardown() {
-        chrome_driver.quit();
-        firefox_driver.quit();
-    }
-
 }

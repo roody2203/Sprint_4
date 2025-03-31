@@ -13,33 +13,14 @@ import ru.praktikum.HomePage;
 
 import java.time.Duration;
 
-public class ScooterFAQWebTest {
-
-    private WebDriver chrome_driver;
-
-    private WebDriver firefox_driver;
-
-    @Before
-    public void StartUp() {
-        // Создаем драйвер для браузера Chrome
-        WebDriverManager.chromedriver().setup();
-
-        chrome_driver = new ChromeDriver();
-        chrome_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(EnvConfig.IMPLICITY_WAIT));
-
-        // Создаем драйвер для браузера Firefox
-        WebDriverManager.chromedriver().setup();
-
-        firefox_driver = new FirefoxDriver();
-        firefox_driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(EnvConfig.IMPLICITY_WAIT));
-    }
+public class ScooterFAQWebTest extends BaseWebTest {
 
     @Test
     // Тест текста FAQ в Chrome
-    public void checkCorrectTextAnswerOnFAQHomePageChrome () throws InterruptedException {
+    public void checkCorrectTextAnswerOnFAQHomePage () throws InterruptedException {
 
         // Создает объект стартовой страницы
-        HomePage homePage = new HomePage(chrome_driver);
+        HomePage homePage = new HomePage(driver);
 
         // Открывает стартовую страницу
         homePage.openHomePage(); //ок
@@ -52,34 +33,5 @@ public class ScooterFAQWebTest {
 
         // Проверяет текст панелей
         homePage.checkPanels();
-
-
     }
-
-    @Test
-    // Тест текста FAQ в Mozilla
-    public void checkCorrectTextAnswerOnFAQHomePageFirefox () throws InterruptedException {
-
-        // Cоздаем объект стартовой страницы
-        HomePage homePage = new HomePage(firefox_driver);
-
-        // Открываем стартовую страницу
-        homePage.openHomePage();
-
-        // Скроллим до FAQ
-        homePage.scrollToTheHomePageFAQ();
-
-        // Закрываем куки
-        homePage.closeCookie();
-
-        // Проверяем текст панелей
-        homePage.checkPanels();
-    }
-
-    @After
-    public void teardown() {
-        chrome_driver.quit();
-        firefox_driver.quit();
-    }
-
 }

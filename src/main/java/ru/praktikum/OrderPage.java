@@ -23,60 +23,83 @@ public class OrderPage {
     }
 
     //Локатор поля Имя
-    private final By fieldName = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[1]/input");
+    private final By fieldName = By.cssSelector(".Input_Responsible__1jDKN[placeholder='* Имя']");
 
     //Локатор поля Фамилия
-    private final By fieldSurname = By.xpath("/html/body/div/div/div[2]/div[2]/div[2]/input");
+    private final By fieldSurname = By.cssSelector(".Input_Responsible__1jDKN[placeholder='* Фамилия']");
 
     //Локатор поля Адрес
-    private final By fieldAddress = By.xpath("/html/body/div/div/div[2]/div[2]/div[3]/input");
+    private final By fieldAddress = By.cssSelector(".Input_Responsible__1jDKN[placeholder='* Адрес: куда привезти заказ']");
 
     //Локатор поля Станция метро
-    private final By fieldMetroStation = By.xpath("/html/body/div/div/div[2]/div[2]/div[4]/div/div/input");
+    private final By fieldMetroStation = By.cssSelector(".select-search__input[placeholder='* Станция метро']");
 
     //Локатор поля Телефон
-    private final By fieldPhone = By.xpath("/html/body/div/div/div[2]/div[2]/div[5]/input");
+    private final By fieldPhone = By.cssSelector(".Input_Responsible__1jDKN[placeholder='* Телефон: на него позвонит курьер']");
 
     //Локатор кнопки Далее
-    private final By buttonFurther = By.xpath("/html/body/div/div/div[2]/div[3]/button");
+    private final By buttonFurther = By.cssSelector(".Button_Middle__1CSJM");
 
     //Локатор поля Когда привезти самокат
-    private final By fieldWhenBringTheScooter = By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/div/div/input");
+    private final By fieldWhenBringTheScooter = By.cssSelector(".Input_Input__1iN_Z[placeholder='* Когда привезти самокат']");
 
     //Локатор поля Срок аренды
-    private final By fieldRentalPeriod = By.xpath("/html/body/div/div/div[2]/div[2]/div[2]/div/div[1]");
+    private final By fieldRentalPeriod = By.cssSelector(".Dropdown-placeholder");
 
     //Локатор срока Четверо суток в выпадающем списке Срока аренды
-    private final By fourDays = By.xpath("/html/body/div/div/div[2]/div[2]/div[2]/div[2]/div[4]");
+    private final By fourDays = By.cssSelector(".Dropdown-option:nth-of-type(4)");
 
     //Локатор для выбора цвета самоката Черный Жемчуг
     private final By colorScooterBlack = By.cssSelector("#black");
 
     //Локатор поля Комментарий для курьера
-    private final By fieldComment = By.xpath("/html/body/div/div/div[2]/div[2]/div[4]/input");
+    private final By fieldComment = By.cssSelector(".Input_Responsible__1jDKN[placeholder='Комментарий для курьера']");
 
-    //Локатор кнопки Далее
-    private final By buttonFurther2 = By.xpath("/html/body/div/div/div[2]/div[3]/button[2]");
+    //Локатор кнопки Заказать
+    private final By buttonFurther2 = By.cssSelector(".Button_Middle__1CSJM:nth-of-type(2)");
 
     //Локатор текста всплывающего Окна подтверждения
-    private final By textOfConfirmDialog = By.xpath("/html/body/div/div/div[2]/div[5]/div[1]");
+    private final By textOfConfirmDialog = By.cssSelector(".Order_ModalHeader__3FDaJ");
 
     //Локатор кнопки Да в диалоговом окне Хотите принять заказ?
-    private final By buttonYesConfirmDialog = By.xpath("/html/body/div/div/div[2]/div[5]/div[2]/button[2]");
+    private final By buttonYesConfirmDialog = By.cssSelector(" div.Order_Modal__YZ-d3 > div.Order_Buttons__1xGrp > button:nth-child(2)");
 
     //Локатор диалогового окна Заказ оформлен
-    private final By textOfSuccesfullOrder = By.xpath("/html/body/div/div/div[2]/div[5]/div[1]");
+    private final By textOfSuccesfullOrder = By.cssSelector(".Order_ModalHeader__3FDaJ");
 
+    // Ввод данных в поле Имя
+    public void fillName(String value) {
+        driver.findElement(fieldName).sendKeys(value);
+    }
+
+    // Ввод данных в поле Фамилия
+    public void fillSurname(String value) {
+        driver.findElement(fieldSurname).sendKeys(value);
+    }
+
+    // Ввод данных в поле Адрес
+    public void fillAddress(String value) {
+        driver.findElement(fieldAddress).sendKeys(value);
+    }
+
+    // Ввод данных в поле Станция метро
+    public void fillMetroStation(String value) {
+        driver.findElement(fieldMetroStation).click();
+        driver.findElement(fieldMetroStation).sendKeys(value, Keys.ARROW_DOWN, Keys.ENTER);
+    }
+
+    // Ввод данных в поле Телефон
+    public void fillPhone(String value) {
+        driver.findElement(fieldPhone).sendKeys(value);
+    }
 
     //Ввод данных на странице Для кого самокат
     public void fillPageWhoIsOrder(String name, String surname, String address, String metroStation, String phone) {
-        driver.findElement(fieldName).sendKeys(name);
-        driver.findElement(fieldSurname).sendKeys(surname);
-        driver.findElement(fieldAddress).sendKeys(address);
-        driver.findElement(fieldMetroStation).click();
-        driver.findElement(fieldMetroStation).sendKeys(metroStation, Keys.ARROW_DOWN, Keys.ENTER);
-        driver.findElement(fieldPhone).sendKeys(phone);
-
+        fillName(name);
+        fillSurname(surname);
+        fillAddress(address);
+        fillMetroStation(metroStation);
+        fillPhone(phone);
     }
 
     public void clickButtonFurther() {
@@ -91,20 +114,39 @@ public class OrderPage {
                 driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
     }
 
-    //Ввод данных на странице Про аренду
-    public void fillPageAboutRent(String date, String comment) {
+    // Ввод данных в поле Дата доставки
+    public void fillDate(String value) {
         driver.findElement(fieldWhenBringTheScooter).click();
-        driver.findElement(fieldWhenBringTheScooter).sendKeys(date, Keys.ENTER);
+        driver.findElement(fieldWhenBringTheScooter).sendKeys(value, Keys.ENTER);
+    }
+
+    // Выбор Срока аренды
+    public void fillRentalPeriod() {
         driver.findElement(fieldRentalPeriod).click();
         driver.findElement(fourDays).click();
-        driver.findElement(colorScooterBlack).click();
-        driver.findElement(fieldComment).sendKeys(comment);
+    }
 
+    // Выбор Черного цвета самоката
+    public void fillColor() {
+        driver.findElement(colorScooterBlack).click();
+    }
+
+    // Ввести данные в поле Комментарий
+    public void fillComment(String value) {
+        driver.findElement(fieldComment).sendKeys(value);
+    }
+
+    //Ввод данных на странице Про аренду
+    public void fillPageAboutRent(String date, String comment) {
+        fillDate(date);
+        fillRentalPeriod();
+        fillColor();
+        fillComment(comment);
     }
 
     public void checkConfirmDialog() {
        String text = driver.findElement(textOfConfirmDialog).getText();
-       MatcherAssert.assertThat("Хотите оформить заказ?\n ", is(text));
+       MatcherAssert.assertThat(ReferenceData.CONFIRM_DIALOG_TEXT, is(text));
     }
 
     public void clickButtonYesConfirmDialog()
@@ -116,6 +158,6 @@ public class OrderPage {
 
     public void checkSuccessfullOrderDialog() {
         String text = driver.findElement(textOfSuccesfullOrder).getText();
-        MatcherAssert.assertThat(text, startsWith("Заказ оформлен\n"));
+        MatcherAssert.assertThat(text, startsWith(ReferenceData.SUCCESS_ORDER_DIALOG_TEXT));
     }
 }
